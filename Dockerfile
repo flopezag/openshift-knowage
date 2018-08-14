@@ -1,4 +1,4 @@
-FROM fiware/knowage-server-docker:6.1.1
+FROM fiware/knowage-server-docker:6.2.0-s
 
 MAINTAINER Fernando López <fernando.lopez@fiware.org>
 
