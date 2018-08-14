@@ -1,0 +1,84 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: null
+  labels:
+    app: knowage
+  name: knowage
+spec:
+  replicas: 1
+  selector:
+    app: knowage
+    deploymentconfig: knowage
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources:
+      limits:
+        cpu: '1'
+        memory: 3192Mi
+      requests:
+        cpu: 50m
+        memory: 512Mi
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+      creationTimestamp: null
+      labels:
+        app: knowage
+        deploymentconfig: knowage
+    spec:
+      containers:
+        - env:
+            - name: DB_ENV_MYSQL_DATABASE
+              value: knowagedb
+            - name: DB_ENV_MYSQL_PASSWORD
+              value: knowagepassword
+            - name: DB_ENV_MYSQL_USER
+              value: knowageuser
+            - name: DB_PORT_3306_TCP_ADDR
+              value: mysqlknowage.fiware-certification.svc
+            - name: DB_PORT_3306_TCP_PORT
+              value: '3306'
+          image: flopez/knowage:6.2.0-s
+          imagePullPolicy: IfNotPresent
+          name: knowage
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            limits:
+              cpu: '1'
+              memory: 3192Mi
+            requests:
+              cpu: 50m
+              memory: 512Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+  test: false
+  triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - knowage
+        from:
+          kind: ImageStreamTag
+          name: 'knowage:6.2.0-s'
+      type: ImageChange
+status:
+  availableReplicas: 0
+  latestVersion: 0
+  observedGeneration: 0
+  replicas: 0
+  unavailableReplicas: 0
+  updatedReplicas: 0

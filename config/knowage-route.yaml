@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Route
+metadata:
+  annotations:
+    openshift.io/host.generated: 'true'
+  creationTimestamp: null
+  labels:
+    app: knowage
+  name: knowage
+spec:
+  host: knowage-fiware-certification.apps.iot.antel.com.uy
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: knowage
+    weight: 100
+  wildcardPolicy: None
+status: {}
