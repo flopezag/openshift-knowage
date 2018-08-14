@@ -1,0 +1,1 @@
+FIWARE Knowage Server image (unprivileged) to be used to deploy it in a OpenShift environment.
